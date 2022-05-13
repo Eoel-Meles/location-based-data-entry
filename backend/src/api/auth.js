@@ -36,7 +36,6 @@ router.get("/", authenticateToken, (req, res, next) => {
 router.post("/regester", (req, res, next) => {
   // sanitize user input
   console.log(req.body.password);
-  const saltRounds = 1;
   bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
     if (err) {
       console.log("GOT HASHING ERROR");
@@ -47,6 +46,33 @@ router.post("/regester", (req, res, next) => {
 });
 
 router.post("/", async (req, res, next) => {
+  console.log(req.body);
+  try {
+    console.log("got here gracefully");
+    const saltRounds = 1;
+    const salt = bcrypt.genSaltSync(saltRounds);
+    const pass = bcrypt.hashSync(req.body.password, salt);
+    // TODO some backend data sanitization must happen
+    obj = {
+      name: req.body.name,
+      username: req.body.username,
+      email: req.body.email,
+      password: pass,
+      org: req.body.org,
+    };
+    const NewUser = new UserModel(obj);
+    const createdUser = await NewUser.save();
+    console.log(createdUser);
+    res.json(createdUser);
+  } catch (error) {
+    if (error.name === "Regestry Error") {
+      res.status(422);
+    }
+    next(error);
+  }
+});
+
+router.post("/login", async (req, res, next) => {
   //   try {
   //     const entries = await LogEntry.find();
   //     res.json(entries);
@@ -54,32 +80,20 @@ router.post("/", async (req, res, next) => {
   //     next(error);
   //   }
   //  get the user from the req.body
+  try {
+    console.log(req.body);
+    const user = await UserModel.findOne({ email: req.body.email });
+    bcrypt.compareSync(req.body.password, user.password);
+    console.log("Authenticated", user);
+    const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
+    console.log("Authenticated");
 
-  const username = req.body.username;
-  const user = UserModel.findOne({ username: username }, function (err) {
-    console.log("INTERNAL ERROR", err);
-  });
-  // check the password of the user
-
-  // bcrypt.compare(req.body.paswword, user.password, function (err, result) {
-  //   if (err)
-  //      res.status(401).json("error": "incorrect password");
-  // });
-
-  //check the user from the database here
-
-  const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
-  res.json({ accessToken: accessToken });
-
-  // if they got authenticated
-  // then use their email/username to search
-  // them from the database and give them the data
-  // the must possess.
-  // database.filter("usernme/email")
-  // then send the markers nd related data to them
-  // change the api file so it gets authenticated.
-  // this means we need to add the auth middleware
-  // to some pages
+    res.setHeader("Authorization", `Bearer ${accessToken}`);
+    res.redirect("http://localhost:8000/");
+  } catch (error) {
+    console.log("PLEASE GOD DONOT MAKE ERROR HERE");
+    next(error);
+  }
 });
 
 module.exports = { router, authenticateToken };

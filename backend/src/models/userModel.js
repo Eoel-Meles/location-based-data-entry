@@ -20,7 +20,7 @@ const userModelSchema = new Schema(
       type: String,
       required: true,
     },
-    role: {
+    org: {
       type: String,
       required: true,
     },

@@ -8,6 +8,28 @@ export async function listLogEntries() {
   return response.json();
 }
 
+export async function regesterUser(data) {
+  const response = await fetch(`${API_URL}/api/auth/`, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+  return response.json();
+}
+
+export async function loginUser(data) {
+  const response = await fetch(`${API_URL}/api/auth/login`, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+  return response.json();
+}
+
 export async function createLogEntry(entry) {
   const apiKey = entry.apiKey;
   delete entry.apiKey;

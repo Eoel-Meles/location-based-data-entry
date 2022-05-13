@@ -10,6 +10,7 @@ const LogEntryForm = ({ location, onClose }) => {
 
   const onSubmit = async (data) => {
     try {
+      console.log(data);
       setLoading(true);
       data.latitude = location.latitude;
       data.longitude = location.longitude;
@@ -24,45 +25,70 @@ const LogEntryForm = ({ location, onClose }) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div class="field">
-        <label class="label">UserName</label>
-        <div class="control">
-          <input class="input" type="text" placeholder="e.g Abel Birhanu" />
+      <div className="field">
+        <label className="label">Title</label>
+        <div className="control">
+          <input
+            className="input"
+            type="text"
+            placeholder="e.g Ye Mebrat Pole"
+            {...register("title", { required: true })}
+          />
         </div>
       </div>
 
-      <div class="field">
-        <label class="label">Title</label>
-        <div class="control">
-          <input class="input" type="text" placeholder="e.g Ye Mebrat Pole" />
-        </div>
+      <div className="field">
+        <label className="label">Icon</label>
+        <p className="control has-icons-left">
+          <input
+            className="input"
+            type="text"
+            placeholder="Icon URL"
+            {...register("icon")}
+          />
+          <span className="icon is-small is-left">
+            <i className="fas fa-file-image"></i>
+          </span>
+        </p>
       </div>
 
-      <div class="field">
-        <label class="label">Image</label>
-        <p class="control has-icons-left">
-          <input class="input" type="text" placeholder="Image URL" />
-          <span class="icon is-small is-left">
-            <i class="fas fa-file-image"></i>
+      <div className="field">
+        <label className="label">Image</label>
+        <p className="control has-icons-left">
+          <input
+            className="input"
+            type="text"
+            placeholder="Image URL"
+            {...register("image")}
+          />
+          <span className="icon is-small is-left">
+            <i className="fas fa-file-image"></i>
           </span>
         </p>
       </div>
       <div className="field">
-        <label class="label">Description</label>
-        <textarea class="textarea" placeholder="e.g. Hello world"></textarea>
+        <label className="label">Description</label>
+        <textarea
+          className="textarea"
+          placeholder="e.g. Hello world"
+          {...register("description")}
+        ></textarea>
       </div>
 
-      <div class="field">
-        <label class="label">Date</label>
-        <div class="control">
-          <input class="input" type="date" placeholder="" />
+      <div className="field">
+        <label className="label">Date</label>
+        <div className="control">
+          <input
+            className="input"
+            type="date"
+            placeholder=""
+            {...register("date")}
+          />
         </div>
       </div>
 
       <div className="field">
-        <button type="submit" className="button is-primary">
-          Save
-        </button>
+        <input type="submit" className="button is-primary" value="Save" />
       </div>
     </form>
   );

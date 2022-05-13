@@ -1,0 +1,21 @@
+POST http://localhost:8000/api/auth
+Content-Type: application/json
+
+{
+    "username": "Kyle"
+}
+
+###
+
+GET http://localhost:8000/api/auth/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiS3lsZSIsImlhdCI6MTY1MjQyNzQ1M30.KM_169PiV5fDaDehrCnn1kkdbNCoa0W1rNgfO2e5q64
+
+###
+
+POST http://localhost:8000/api/auth/regester
+Content-Type: application/json
+
+{
+    "username": "Kyle",
+    "password": "helloworld"
+}

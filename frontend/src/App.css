@@ -1,0 +1,11 @@
+.auth {
+  display: flex;
+  flex: 1;
+  height: 100vh;
+  width: 100vw;
+  background-image: url("https://mir-s3-cdn-cf.behance.net/project_modules/1400/7cc89837357691.573d77e90aca1.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  align-items: center;
+  justify-content: center;
+}

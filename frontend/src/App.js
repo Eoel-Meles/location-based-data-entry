@@ -165,6 +165,7 @@ const Mapper = () => {
 
 const AuthView = () => {
   const [modal, setModal] = React.useState(false);
+  const [loginForm, setLoginForm] = React.useState(false);
   const {
     register,
     handleSubmit,
@@ -178,122 +179,166 @@ const AuthView = () => {
     setModal(!modal);
   }
 
+  function toggleLoginForm() {
+    setLoginForm(!loginForm);
+  }
+
   function changeLanguage(language) {
     i18n.changeLanguage(language);
   }
 
   return (
     <div className="auth">
-      <div className={modal ? "modal is-active" : "modal"}>
-        <div className="modal-background"></div>
-        <div className="modal-card">
-          <header className="modal-card-head">
-            <p className="modal-card-title">Terms and Services</p>
-            <button
-              className="delete"
-              aria-label="close"
-              onClick={toggleModal}
-            ></button>
-          </header>
-          <section className="modal-card-body">
-            Content for terms and services will come in soon with multiple
-            language support
-          </section>
-          <footer className="modal-card-foot">
-            <button className="button" onClick={toggleModal}>
-              Ok
-            </button>
-          </footer>
-        </div>
-      </div>
-
-      <form onSubmit={handleSubmit(onSubmit)} className="field box">
-        <a onClick={() => changeLanguage("en")}>En</a>
-        {" | "}
-        <a onClick={() => changeLanguage("am")}>Am</a>
-        <h1 className="title is-4">{t("regester")}</h1>
-        <div className="field">
-          <label className="label">Name</label>
-          <div className="control">
-            <input className="input" type="text" placeholder="Text input" />
-          </div>
-        </div>
-
-        <div className="field">
-          <label className="label">Username</label>
-          <div className="control has-icons-left has-icons-right">
-            <input
-              className="input is-success"
-              type="text"
-              placeholder="Text input"
-              value=""
-              {...register("username", { required: true })}
-            />
-            <span className="icon is-small is-left">
-              <i className="fas fa-user"></i>
-            </span>
-            <span className="icon is-small is-right">
-              <i className="fas fa-check"></i>
-            </span>
-          </div>
-          <p className="help is-success">This username is available</p>
-        </div>
-
-        <div className="field">
-          <label className="label">Email</label>
-          <div className="control has-icons-left has-icons-right">
-            <input
-              className={errors.email ? "input is-danger" : "input"}
-              type="email"
-              placeholder="Email input"
-              value=""
-              {...register("email", { required: true })}
-            />
-            <span className="icon is-small is-left">
-              <i className="fas fa-envelope"></i>
-            </span>
-            <span className="icon is-small is-right">
-              <i className="fas fa-exclamation-triangle"></i>
-            </span>
-          </div>
-          {errors.email && (
-            <p className="help is-danger">This email is invalid</p>
-          )}
-        </div>
-
-        <div className="field">
-          <label className="label">Organization</label>
-          <div className="control">
-            <div className="select">
-              <select>
-                <option>Select Org</option>
-                <option>EELPA</option>
-                <option>WaSH</option>
-              </select>
+      {loginForm === false ? (
+        <>
+          <div className={modal ? "modal is-active" : "modal"}>
+            <div className="modal-background"></div>
+            <div className="modal-card">
+              <header className="modal-card-head">
+                <p className="modal-card-title">Terms and Services</p>
+                <button
+                  className="delete"
+                  aria-label="close"
+                  onClick={toggleModal}
+                ></button>
+              </header>
+              <section className="modal-card-body">
+                Content for terms and services will come in soon with multiple
+                language support
+              </section>
+              <footer className="modal-card-foot">
+                <button className="button" onClick={toggleModal}>
+                  Ok
+                </button>
+              </footer>
             </div>
           </div>
-        </div>
 
-        <div className="field">
-          <div className="control">
-            <label className="checkbox">
-              <input type="checkbox" /> I agree to the{" "}
-              <a href="#" onClick={toggleModal}>
-                terms and conditions
-              </a>
-            </label>
-          </div>
-        </div>
+          <form onSubmit={handleSubmit(onSubmit)} className="field box">
+            <a onClick={() => changeLanguage("en")}>En</a>
+            {" | "}
+            <a onClick={() => changeLanguage("am")}>Am</a>
+            <h1 className="title is-4">{t("regester")}</h1>
+            <div className="field">
+              <label className="label">Name</label>
+              <div className="control">
+                <input className="input" type="text" placeholder="Text input" />
+              </div>
+            </div>
 
-        <div className="field is-grouped">
-          <div className="control">
-            <button className="button is-link">Submit</button>
+            <div className="field">
+              <label className="label">Username</label>
+              <div className="control has-icons-left has-icons-right">
+                <input
+                  className="input is-success"
+                  type="text"
+                  placeholder="Text input"
+                  value=""
+                  {...register("username", { required: true })}
+                />
+                <span className="icon is-small is-left">
+                  <i className="fas fa-user"></i>
+                </span>
+                <span className="icon is-small is-right">
+                  <i className="fas fa-check"></i>
+                </span>
+              </div>
+              <p className="help is-success">This username is available</p>
+            </div>
+
+            <div className="field">
+              <label className="label">Email</label>
+              <div className="control has-icons-left has-icons-right">
+                <input
+                  className={errors.email ? "input is-danger" : "input"}
+                  type="email"
+                  placeholder="Email input"
+                  value=""
+                  {...register("email", { required: true })}
+                />
+                <span className="icon is-small is-left">
+                  <i className="fas fa-envelope"></i>
+                </span>
+                <span className="icon is-small is-right">
+                  <i className="fas fa-exclamation-triangle"></i>
+                </span>
+              </div>
+              {errors.email && (
+                <p className="help is-danger">This email is invalid</p>
+              )}
+            </div>
+
+            <div className="field">
+              <label className="label">Organization</label>
+              <div className="control">
+                <div className="select">
+                  <select>
+                    <option>Select Org</option>
+                    <option>EELPA</option>
+                    <option>WaSH</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div className="field">
+              <div className="control">
+                <label className="checkbox">
+                  <input type="checkbox" /> I agree to the{" "}
+                  <a href="#" onClick={toggleModal}>
+                    terms and conditions
+                  </a>
+                </label>
+              </div>
+            </div>
+
+            <div className="field is-grouped">
+              <div className="control">
+                <button className="button is-link">Submit</button>
+              </div>
+              <div className="control">
+                <button className="button is-link is-light">Cancel</button>
+              </div>
+            </div>
+
+            <div className="field">
+              Already a member ? <a onClick={toggleLoginForm}>Login here</a>
+            </div>
+          </form>
+        </>
+      ) : (
+        <div className="box">
+          <h1 className="title is-4">{t("login")}</h1>
+
+          <div class="field">
+            <p class="control has-icons-left has-icons-right">
+              <input class="input" type="email" placeholder="Email" />
+              <span class="icon is-small is-left">
+                <i class="fas fa-envelope"></i>
+              </span>
+              <span class="icon is-small is-right">
+                <i class="fas fa-check"></i>
+              </span>
+            </p>
           </div>
-          <div className="control">
-            <button className="button is-link is-light">Cancel</button>
+          <div class="field">
+            <p class="control has-icons-left">
+              <input class="input" type="password" placeholder="Password" />
+              <span class="icon is-small is-left">
+                <i class="fas fa-lock"></i>
+              </span>
+            </p>
+          </div>
+          <div class="field">
+            <p class="control">
+              <button class="button is-success">Login</button>
+            </p>
+          </div>
+          <div className="field">
+            Not Regestered ? <a onClick={toggleLoginForm}>Regester here</a>
           </div>
         </div>
-      </form>
+      )}
     </div>
   );
 };

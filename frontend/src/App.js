@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ReactMapGL, { Marker, Popup } from "react-map-gl";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 
 import "./App.css";
 import "bulma/css/bulma.min.css";
@@ -9,6 +10,10 @@ import { listLogEntries } from "./API";
 import LogEntryForm from "./LogEntryForm";
 
 const App = () => {
+  return <AuthView />;
+};
+
+const Mapper = () => {
   const [logEntries, setLogEntries] = useState([]);
   const [showPopup, setShowPopup] = useState({});
   const [addEntryLocation, setAddEntryLocation] = useState(null);
@@ -37,7 +42,6 @@ const App = () => {
       longitude,
     });
   };
-
   return (
     <ReactMapGL
       {...viewport}
@@ -160,6 +164,7 @@ const App = () => {
 };
 
 const AuthView = () => {
+  const [modal, setModal] = React.useState(false);
   const {
     register,
     handleSubmit,
@@ -167,10 +172,46 @@ const AuthView = () => {
     formState: { errors },
   } = useForm();
   const onSubmit = (data) => console.log(data);
+  const { t, i18n } = useTranslation();
+
+  function toggleModal() {
+    setModal(!modal);
+  }
+
+  function changeLanguage(language) {
+    i18n.changeLanguage(language);
+  }
+
   return (
     <div className="auth">
+      <div className={modal ? "modal is-active" : "modal"}>
+        <div className="modal-background"></div>
+        <div className="modal-card">
+          <header className="modal-card-head">
+            <p className="modal-card-title">Terms and Services</p>
+            <button
+              className="delete"
+              aria-label="close"
+              onClick={toggleModal}
+            ></button>
+          </header>
+          <section className="modal-card-body">
+            Content for terms and services will come in soon with multiple
+            language support
+          </section>
+          <footer className="modal-card-foot">
+            <button className="button" onClick={toggleModal}>
+              Ok
+            </button>
+          </footer>
+        </div>
+      </div>
+
       <form onSubmit={handleSubmit(onSubmit)} className="field box">
-        <h1 className="title is-4">Register</h1>
+        <a onClick={() => changeLanguage("en")}>En</a>
+        {" | "}
+        <a onClick={() => changeLanguage("am")}>Am</a>
+        <h1 className="title is-4">{t("regester")}</h1>
         <div className="field">
           <label className="label">Name</label>
           <div className="control">
@@ -185,7 +226,7 @@ const AuthView = () => {
               className="input is-success"
               type="text"
               placeholder="Text input"
-              value="bulma"
+              value=""
               {...register("username", { required: true })}
             />
             <span className="icon is-small is-left">
@@ -221,12 +262,13 @@ const AuthView = () => {
         </div>
 
         <div className="field">
-          <label className="label">Subject</label>
+          <label className="label">Organization</label>
           <div className="control">
             <div className="select">
               <select>
-                <option>Select dropdown</option>
-                <option>With options</option>
+                <option>Select Org</option>
+                <option>EELPA</option>
+                <option>WaSH</option>
               </select>
             </div>
           </div>
@@ -236,7 +278,9 @@ const AuthView = () => {
           <div className="control">
             <label className="checkbox">
               <input type="checkbox" /> I agree to the{" "}
-              <a href="#">terms and conditions</a>
+              <a href="#" onClick={toggleModal}>
+                terms and conditions
+              </a>
             </label>
           </div>
         </div>
